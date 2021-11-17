@@ -22,7 +22,7 @@ public class UserResoucer {
     private UserServices service;
 
 
-    @RequestMapping(method= RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserDTO>> findAll() {
         List<User> list = service.findAll();
         List<UserDTO> listDto = list.stream().map(vs -> new UserDTO((User) vs)).collect(Collectors.toList());
@@ -30,20 +30,18 @@ public class UserResoucer {
 
     }
 
-    @RequestMapping(value="/{id}", method=RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
-       Optional<User> obj = service.findById(id);
+        Optional<User> obj = service.findById(id);
         return ResponseEntity.ok().body(new UserDTO(obj));
     }
 
-
-    @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> insert(@RequestBody UserDTO objDto) {
-        User obj = service.fromDTO(objDto);
-        obj = service.insert(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> Insert(@RequestBody UserDTO ObjDTO) {
+        User Obj = service.fromDTO(ObjDTO);
+        Obj = service.insert(Obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(Obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 }
-
 
