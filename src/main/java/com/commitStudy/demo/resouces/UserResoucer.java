@@ -4,10 +4,10 @@ import com.commitStudy.demo.domain.User;
 import com.commitStudy.demo.dto.Services.UserServices;
 import com.commitStudy.demo.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +33,11 @@ public class UserResoucer {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
         Optional<User> obj = service.findById(id);
-        return ResponseEntity.ok().body(new UserDTO(obj));
+        if (obj.isPresent()) {
+            User user = obj.get();
+            return ResponseEntity.ok().body(new UserDTO(user));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @RequestMapping(method = RequestMethod.POST)
